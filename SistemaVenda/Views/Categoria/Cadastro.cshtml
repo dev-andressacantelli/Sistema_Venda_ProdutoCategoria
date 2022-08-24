@@ -1,0 +1,58 @@
+﻿@{ 
+    ViewData["Title"] = "Categorias";
+}
+
+<h2>Categorias</h2>
+<hr />
+
+@model SistemaVenda.Models.CategoriaViewModel
+
+
+<!--Desabilitando botão excluir quando receber variável nula, ou seja, categoria vazia: -->
+@{
+    var disabled = (Model.Codigo == null) ? "disabled" : string.Empty; //VERIFICAÇÃO PADRÃO P/ TODOS OS CADASTROS
+}
+
+<form asp-controller="Categoria" asp-action="Cadastro" method="post">
+    <input type="hidden" asp-for="Codigo" value="@Model.Codigo" />
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>Descrição</label>
+            <input asp-for="Descricao" type="text" value="@Model.Descricao" class="form-control" />
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="col">
+            <button type="button" class="btn btn-info" onclick="Novo()">Novo</button>
+            <button type="submit" class="btn btn-success">Gravar</button>
+            <button type="button" class="btn btn-warning" onclick="Listagem()">Listagem</button>
+            <button type="button" class="btn btn-danger" onclick="Excluir(@Model.Codigo)" @disabled>Excluir</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    //Chamando a função para cada parâmetro:
+    function Novo() {
+        Request("Cadastro");
+    }
+
+    function Listagem() {
+        Request("");
+    }
+    /* Esse código seria o mesmo que executar por cada parâmetro:
+    function Listagem() {
+        window.location = window.origin + "\\Categoria";
+    }                                                */
+
+    function Excluir(Codigo) {
+        Request("Excluir\\" + Codigo);
+    }
+
+    //Criando função para facilitar chamada de código:
+    function Request(request) {
+        window.location = window.origin + "\\Categoria\\" + request;
+    }
+
+</script>
